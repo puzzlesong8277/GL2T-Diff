@@ -1,16 +1,10 @@
-# Fast-DDPM
+# GL2T-Diff: Medical Image Translation via Spatial-Frequency Fusion Diffusion Models
 
-Official PyTorch implementation of: 
-
-[Fast Denoising Diffusion Probabilistic Models for Medical Image-to-Image Generation](https://arxiv.org/abs/2405.14802v1) 
-
-We propose Fast-DDPM, is a simple yet effective approach that improves training speed, sampling speed, and generation quality of diffusion models simultaneously. Fast-DDPM trains and samples using only 10 time steps, reducing the training time to 0.2x and the sampling time to 0.01x compared to DDPM.
+We propose a diffusion model (GL2T-Diff) based on convolutional channel and Laplacian frequency attention mechanisms, which is designed to enhance MIT tasks by effectively preserving critical image features.
 
 <p align="center">
-  <img src="Overview.png" alt="DDPM vs. Fast-DDPM" width="750">
+  <img src="Overview.jpeg" alt="DDPM vs. Fast-DDPM" width="750">
 </p>
-
-The code is only for research purposes. If you have any questions regarding how to use this code, feel free to contact Hongxu Jiang (hongxu.jiang@medicine.ufl.edu).
 
 ## Requirements
 * Python==3.10.6
@@ -30,8 +24,7 @@ The code is only for research purposes. If you have any questions regarding how 
 ## Publicly available Dataset
 - Prostate-MRI-US-Biopsy dataset
 - LDCT-and-Projection-data dataset
-- BraTS 2018 dataset
-- The processed dataset can be accessed here: https://drive.google.com/file/d/1u9OWKxWCNGLadNEaiho3uUFGuGL2KXl9/view?usp=drive_link.
+- BraTS 2020/2024 dataset
 
 ## Usage
 ### 1. Git clone or download the codes.
@@ -44,12 +37,9 @@ The code is only for research purposes. If you have any questions regarding how 
 ├── configs
 │
 ├── data
-│	├── LD_FD_CT_train
-│	├── LD_FD_CT_test
-│	├── PMUB-train
-│	├── PMUB-test
-│	├── train2D
-│	└── val2D
+│	├── BtaTS
+│	├── IXI
+│	└── pelivc
 │
 ├── datasets
 │
@@ -62,18 +52,17 @@ The code is only for research purposes. If you have any questions regarding how 
 ```
 
 
-### 3. Training/Sampling a Fast-DDPM model
+### 3. Training/Sampling a GL2T-Diff model
 * Please make sure that the hyperparameters such as scheduler type and timesteps are consistent between training and sampling.
-* The total number of time steps is defaulted as 1000 in the paper, so the number of involved time steps for Fast-DDPM should be less than 1000 as an integer.
+* The total number of time steps is defaulted as 1000 in the paper, so the number of involved time steps should be less than 1000 as an integer.
 ```
-python fast_ddpm_main.py --config {DATASET}.yml --dataset {DATASET_NAME} --exp {PROJECT_PATH} --doc {MODEL_NAME} --scheduler_type {SAMPLING STRATEGY} --timesteps {STEPS}
+python main.py --config {DATASET}.yml --dataset {DATASET_NAME} --exp {PROJECT_PATH} --doc {MODEL_NAME} --scheduler_type {SAMPLING STRATEGY} --timesteps {STEPS}
 ```
 ```
-python fast_ddpm_main.py --config {DATASET}.yml --dataset {DATASET_NAME} --exp {PROJECT_PATH} --doc {MODEL_NAME} --sample --fid --scheduler_type {SAMPLING STRATEGY} --timesteps {STEPS}
+python main.py --config {DATASET}.yml --dataset {DATASET_NAME} --exp {PROJECT_PATH} --doc {MODEL_NAME} --sample --fid --scheduler_type {SAMPLING STRATEGY} --timesteps {STEPS}
 ```
 
 where 
-- `DATASET_NAME` should be selected among `LDFDCT` for image denoising task, `BRATS` for image-to-image translation task and `PMUB` for multi image super-resolution task.
 - `SAMPLING STRATEGY` controls the scheduler sampling strategy proposed in the paper (either uniform or non-uniform).
 - `STEPS` controls how many timesteps used in the training and inference process. It should be an integer less than 1000 for Fast-DDPM.
 
@@ -91,20 +80,12 @@ python ddpm_main.py --config {DATASET}.yml --dataset {DATASET_NAME} --exp {PROJE
 python ddpm_main.py --config brats_linear.yml --dataset BRATS  --doc BraTS2024/T1_flairBraTS2024 --sample --fid --timesteps 100
 
 where 
-- `DATASET_NAME` should be selected among `LDFDCT` for image denoising task, `BRATS` for image-to-image translation task and `PMUB` for multi image super-resolution task.
+- `DATASET_NAME` should be selected among `LDFDCT` for image denoising task, `BRATS` for image-to-image translation task.
 - `STEPS` controls how many timesteps used in the training and inference process. It should be 1000 in the setting of this paper.
 
 
 ## References
 * The code is mainly adapted from [DDIM](https://github.com/ermongroup/ddim).
-
-
-## Citations
-If you use our code or dataset, please cite our paper as below:
-```bibtex
-@misc{jiang2024fast,
-      title={Fast Denoising Diffusion Probabilistic Models for Medical Image-to-Image Generation}, 
-      author={Hongxu Jiang and Muhammad Imran and Linhai Ma and Teng Zhang and Yuyin Zhou and Muxuan Liang and Kuang Gong and Wei Shao},
       year={2024},
       eprint={2405.14802},
       archivePrefix={arXiv},

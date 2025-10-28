@@ -22,9 +22,9 @@ We propose a diffusion model (GL2T-Diff) based on convolutional channel and Lapl
 * `pip install -r requirements.txt`
 
 ## Publicly available Dataset
-- Prostate-MRI-US-Biopsy dataset
-- LDCT-and-Projection-data dataset
 - BraTS 2020/2024 dataset
+- IXI – Information eXtraction from Images (EPSRC GR/S21533/02)
+- Pelvic Dataset
 
 ## Usage
 ### 1. Git clone or download the codes.
@@ -37,7 +37,7 @@ We propose a diffusion model (GL2T-Diff) based on convolutional channel and Lapl
 ├── configs
 │
 ├── data
-│	├── BtaTS
+│	├── BraTS
 │	├── IXI
 │	└── pelivc
 │
